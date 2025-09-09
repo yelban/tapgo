@@ -354,7 +354,7 @@ body {
     .header-controls {
         justify-content: center;
         gap: 1rem;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
     
     .kitchen-main {
@@ -366,12 +366,12 @@ body {
     }
     
     .table-header {
-        grid-template-columns: 90px 100px 60px 1fr 60px 90px;
+        grid-template-columns: 90px 100px 90px 1fr 60px 90px;
         font-size: 1rem;
     }
     
     .order-row {
-        grid-template-columns: 90px 100px 60px 1fr 60px 90px;
+        grid-template-columns: 90px 100px 90px 1fr 60px 90px;
     }
     
     .table-header > div,
