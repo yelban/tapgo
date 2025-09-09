@@ -152,7 +152,7 @@ body {
 
 .table-header {
     display: grid;
-    grid-template-columns: 100px 120px 80px 1fr 80px 100px;
+    grid-template-columns: 100px 120px 90px 1fr 80px 100px;
     background: var(--primary-color);
     color: white;
     font-weight: bold;
