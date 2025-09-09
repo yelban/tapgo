@@ -144,6 +144,10 @@ class KitchenDisplay {
                     aValue = new Date(a.created_at);
                     bValue = new Date(b.created_at);
                     break;
+                case 'customer':
+                    aValue = a.customer_name;
+                    bValue = b.customer_name;
+                    break;
                 case 'table':
                     aValue = a.table_number || '';
                     bValue = b.table_number || '';
