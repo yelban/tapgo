@@ -4,6 +4,7 @@ class KitchenDisplay {
         this.orders = [];
         this.lastOrderCount = 0;
         this.refreshInterval = null;
+        this.currentSort = { field: 'time', direction: 'desc' }; // 預設按時間倒序排列
         
         this.initializeElements();
         this.bindEvents();
@@ -32,6 +33,14 @@ class KitchenDisplay {
             } else {
                 this.stopAutoRefresh();
             }
+        });
+
+        // 排序功能
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', (e) => {
+                const sortField = e.currentTarget.dataset.sort;
+                this.handleSort(sortField);
+            });
         });
 
         // 鍵盤快捷鍵
@@ -89,10 +98,8 @@ class KitchenDisplay {
 
         this.hideEmptyState();
 
-        // 按創建時間倒序排列
-        const sortedOrders = [...this.orders].sort((a, b) => 
-            new Date(b.created_at) - new Date(a.created_at)
-        );
+        // 根據當前排序設定排列
+        const sortedOrders = this.sortOrders([...this.orders]);
 
         const ordersHTML = sortedOrders.map((order, index) => {
             const isNew = index < (this.orders.length - this.lastOrderCount + sortedOrders.length);
@@ -110,6 +117,72 @@ class KitchenDisplay {
 
         this.tableBody.innerHTML = ordersHTML;
         this.orderCount.textContent = this.orders.length;
+        this.updateSortIndicators();
+    }
+
+    handleSort(field) {
+        if (this.currentSort.field === field) {
+            // 同一欄位，切換排序方向
+            this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            // 不同欄位，預設升序
+            this.currentSort.field = field;
+            this.currentSort.direction = 'asc';
+        }
+        
+        this.renderOrders();
+    }
+
+    sortOrders(orders) {
+        const { field, direction } = this.currentSort;
+        
+        return orders.sort((a, b) => {
+            let aValue, bValue;
+            
+            switch (field) {
+                case 'time':
+                    aValue = new Date(a.created_at);
+                    bValue = new Date(b.created_at);
+                    break;
+                case 'table':
+                    aValue = a.table_number || '';
+                    bValue = b.table_number || '';
+                    // 數字排序：先將字串轉為數字，如果不是數字則保持字串
+                    const aNum = parseInt(aValue);
+                    const bNum = parseInt(bValue);
+                    if (!isNaN(aNum) && !isNaN(bNum)) {
+                        aValue = aNum;
+                        bValue = bNum;
+                    }
+                    break;
+                case 'item':
+                    aValue = a.item_name;
+                    bValue = b.item_name;
+                    break;
+                default:
+                    return 0;
+            }
+            
+            let result;
+            if (aValue < bValue) result = -1;
+            else if (aValue > bValue) result = 1;
+            else result = 0;
+            
+            return direction === 'desc' ? -result : result;
+        });
+    }
+
+    updateSortIndicators() {
+        // 清除所有排序指示器
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.removeAttribute('data-sort-direction');
+        });
+        
+        // 設定當前排序欄位的指示器
+        const currentHeader = document.querySelector(`.sortable[data-sort="${this.currentSort.field}"]`);
+        if (currentHeader) {
+            currentHeader.setAttribute('data-sort-direction', this.currentSort.direction);
+        }
     }
 
     updateStats() {

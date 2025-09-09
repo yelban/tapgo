@@ -31,10 +31,16 @@
             <div class="loading" id="loading">載入中...</div>
             <div class="orders-table" id="ordersTable">
                 <div class="table-header">
-                    <div class="col-time">時間</div>
+                    <div class="col-time sortable" data-sort="time">
+                        時間 <span class="sort-indicator"></span>
+                    </div>
                     <div class="col-customer">客戶</div>
-                    <div class="col-table">桌號</div>
-                    <div class="col-item">菜品</div>
+                    <div class="col-table sortable" data-sort="table">
+                        桌號 <span class="sort-indicator"></span>
+                    </div>
+                    <div class="col-item sortable" data-sort="item">
+                        菜品 <span class="sort-indicator"></span>
+                    </div>
                     <div class="col-qty">數量</div>
                     <div class="col-price">金額</div>
                 </div>

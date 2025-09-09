@@ -164,6 +164,41 @@ body {
     text-align: left;
 }
 
+/* 可排序欄位樣式 */
+.table-header .sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table-header .sortable:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sort-indicator {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    margin-left: 0.5rem;
+}
+
+.sortable[data-sort-direction="asc"] .sort-indicator::after {
+    content: "↑";
+    opacity: 1;
+}
+
+.sortable[data-sort-direction="desc"] .sort-indicator::after {
+    content: "↓";
+    opacity: 1;
+}
+
+.sortable:not([data-sort-direction]) .sort-indicator::after {
+    content: "↕";
+}
+
 .table-body {
     display: contents;
 }
