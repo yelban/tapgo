@@ -1,0 +1,9 @@
+name = "tapgo"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tapgo"
+database_id = "a2e766b1-11da-4f8a-b550-81e80dd5e962"
+migrations_dir = "./migrations"

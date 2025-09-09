@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>TapGo 線上點餐</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1 class="logo">TapGo 點餐</h1>
+            <button class="cart-btn" id="cartBtn">
+                <span class="cart-icon">🛒</span>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+        </header>
+
+        <main class="main">
+            <div class="menu-container" id="menuContainer">
+                <!-- 菜單將由 JavaScript 動態生成 -->
+            </div>
+        </main>
+
+        <!-- 菜品詳情彈窗 -->
+        <div class="modal" id="itemModal">
+            <div class="modal-backdrop" id="modalBackdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                    <button class="modal-close" id="modalClose">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="item-info">
+                        <div class="item-price" id="modalPrice"></div>
+                        <div class="item-note" id="modalNote"></div>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="qty-btn qty-minus" id="qtyMinus">−</button>
+                        <span class="qty-display" id="qtyDisplay">1</span>
+                        <button class="qty-btn qty-plus" id="qtyPlus">+</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="add-to-cart-btn" id="addToCartBtn">加入購物車</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 購物車彈窗 -->
+        <div class="modal" id="cartModal">
+            <div class="modal-backdrop" id="cartModalBackdrop"></div>
+            <div class="modal-content cart-modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">購物車</h3>
+                    <button class="modal-close" id="cartModalClose">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="cart-items" id="cartItems">
+                        <!-- 購物車項目將由 JavaScript 動態生成 -->
+                    </div>
+                    <div class="cart-total">
+                        <div class="total-line">
+                            <span>總計：</span>
+                            <span class="total-amount" id="totalAmount">$0</span>
+                        </div>
+                    </div>
+                    <div class="customer-info">
+                        <div class="form-group">
+                            <label for="customerName">姓名 *</label>
+                            <input type="text" id="customerName" placeholder="請輸入姓名或暱稱" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tableNumber">桌號</label>
+                            <input type="text" id="tableNumber" placeholder="選填">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="submit-order-btn" id="submitOrderBtn" disabled>送出訂單</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "tapgo",
+  "version": "1.0.0",
+  "description": "TapGo 線上點餐系統",
+  "main": "index.js",
+  "scripts": {
+    "dev": "wrangler pages dev public --compatibility-date=2024-01-01",
+    "build": "echo 'No build step required'",
+    "deploy": "wrangler pages deploy public",
+    "db:create": "wrangler d1 create tapgo",
+    "db:migrate": "wrangler d1 migrations apply tapgo --local",
+    "db:migrate:prod": "wrangler d1 migrations apply tapgo",
+    "db:console": "wrangler d1 execute tapgo --local --command",
+    "db:console:prod": "wrangler d1 execute tapgo --command"
+  },
+  "keywords": [
+    "cloudflare",
+    "pages",
+    "d1",
+    "restaurant",
+    "ordering"
+  ],
+  "author": "TapGo Team",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

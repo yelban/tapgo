@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TapGo 後台管理</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-app">
+        <header class="admin-header">
+            <h1 class="admin-logo">TapGo 後台管理</h1>
+            <div class="admin-nav">
+                <button class="nav-btn active" data-tab="orders">訂單管理</button>
+                <button class="nav-btn" data-tab="statistics">統計資料</button>
+            </div>
+        </header>
+
+        <main class="admin-main">
+            <!-- 訂單管理頁面 -->
+            <div class="tab-content active" id="orders-tab">
+                <div class="content-header">
+                    <h2>訂單管理</h2>
+                    <button class="refresh-btn" id="refreshBtn">🔄 重新整理</button>
+                </div>
+
+                <!-- 搜尋篩選 -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>客戶姓名</label>
+                        <input type="text" id="filterCustomer" placeholder="搜尋客戶姓名">
+                    </div>
+                    <div class="filter-group">
+                        <label>桌號</label>
+                        <input type="text" id="filterTable" placeholder="桌號">
+                    </div>
+                    <div class="filter-group">
+                        <label>日期範圍</label>
+                        <input type="date" id="filterDateFrom">
+                        <span>到</span>
+                        <input type="date" id="filterDateTo">
+                    </div>
+                    <div class="filter-actions">
+                        <button class="filter-btn" id="applyFilters">搜尋</button>
+                        <button class="clear-btn" id="clearFilters">清除</button>
+                    </div>
+                </div>
+
+                <!-- 訂單列表 -->
+                <div class="orders-container">
+                    <div class="loading" id="ordersLoading">載入中...</div>
+                    <div class="orders-list" id="ordersList">
+                        <!-- 訂單將由 JavaScript 動態生成 -->
+                    </div>
+                </div>
+
+                <!-- 分頁控制 -->
+                <div class="pagination" id="pagination">
+                    <!-- 分頁將由 JavaScript 動態生成 -->
+                </div>
+            </div>
+
+            <!-- 統計資料頁面 -->
+            <div class="tab-content" id="statistics-tab">
+                <div class="content-header">
+                    <h2>統計資料</h2>
+                </div>
+                <div class="stats-container" id="statsContainer">
+                    <!-- 統計資料將由 JavaScript 動態生成 -->
+                </div>
+            </div>
+        </main>
+
+        <!-- 編輯訂單彈窗 -->
+        <div class="modal" id="editModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>編輯訂單</h3>
+                    <button class="modal-close" id="editModalClose">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <input type="hidden" id="editOrderId">
+                        <div class="form-group">
+                            <label for="editCustomerName">客戶姓名 *</label>
+                            <input type="text" id="editCustomerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTableNumber">桌號</label>
+                            <input type="text" id="editTableNumber">
+                        </div>
+                        <div class="form-group">
+                            <label for="editItemName">菜品名稱 *</label>
+                            <input type="text" id="editItemName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editItemPrice">單價 *</label>
+                            <input type="number" id="editItemPrice" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editQuantity">數量 *</label>
+                            <input type="number" id="editQuantity" min="1" max="9" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="cancel-btn" id="editCancel">取消</button>
+                    <button class="save-btn" id="editSave">儲存</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 確認刪除彈窗 -->
+        <div class="modal" id="deleteModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>確認刪除</h3>
+                    <button class="modal-close" id="deleteModalClose">✕</button>
+                </div>
+                <div class="modal-body">
+                    <p>確定要刪除這筆訂單嗎？此操作無法復原。</p>
+                    <div class="order-details" id="deleteOrderDetails">
+                        <!-- 訂單詳情將由 JavaScript 填充 -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="cancel-btn" id="deleteCancel">取消</button>
+                    <button class="delete-btn" id="deleteConfirm">刪除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
