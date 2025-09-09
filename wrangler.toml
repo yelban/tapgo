@@ -1,6 +1,7 @@
 name = "tapgo"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "public"
+account_id = "fb1c0985dd271b5636145f18350ff0ff"
 
 [[d1_databases]]
 binding = "DB"
