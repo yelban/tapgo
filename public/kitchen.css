@@ -152,7 +152,7 @@ body {
 
 .table-header {
     display: grid;
-    grid-template-columns: 140px 120px 80px 1fr 80px 100px;
+    grid-template-columns: 100px 120px 80px 1fr 80px 100px;
     background: var(--primary-color);
     color: white;
     font-weight: bold;
@@ -170,7 +170,7 @@ body {
 
 .order-row {
     display: grid;
-    grid-template-columns: 140px 120px 80px 1fr 80px 100px;
+    grid-template-columns: 100px 120px 80px 1fr 80px 100px;
     border-bottom: 1px solid var(--border-color);
     transition: background-color 0.2s;
     align-items: center;
@@ -330,12 +330,12 @@ body {
     }
     
     .table-header {
-        grid-template-columns: 120px 100px 60px 1fr 60px 90px;
+        grid-template-columns: 90px 100px 60px 1fr 60px 90px;
         font-size: 1rem;
     }
     
     .order-row {
-        grid-template-columns: 120px 100px 60px 1fr 60px 90px;
+        grid-template-columns: 90px 100px 60px 1fr 60px 90px;
     }
     
     .table-header > div,
@@ -370,11 +370,11 @@ body {
     }
     
     .table-header {
-        grid-template-columns: 100px 80px 50px 1fr 50px 80px;
+        grid-template-columns: 80px 80px 50px 1fr 50px 80px;
     }
     
     .order-row {
-        grid-template-columns: 100px 80px 50px 1fr 50px 80px;
+        grid-template-columns: 80px 80px 50px 1fr 50px 80px;
     }
 }
 

@@ -132,28 +132,24 @@ class KitchenDisplay {
 
     formatTime(dateString) {
         const date = new Date(dateString);
-        const now = new Date();
-        const diffMs = now - date;
-        const diffMins = Math.floor(diffMs / 60000);
         
-        if (diffMins < 1) {
-            return '剛剛';
-        } else if (diffMins < 60) {
-            return `${diffMins}分前`;
-        } else {
-            return date.toLocaleTimeString('zh-TW', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
+        // 使用 Asia/Taipei 時區顯示 24 小時制時間
+        return date.toLocaleTimeString('zh-TW', {
+            timeZone: 'Asia/Taipei',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
     }
 
     updateLastUpdateTime() {
         const now = new Date();
         this.lastUpdate.textContent = now.toLocaleTimeString('zh-TW', {
+            timeZone: 'Asia/Taipei',
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit'
+            second: '2-digit',
+            hour12: false
         });
     }
 
