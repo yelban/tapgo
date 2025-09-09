@@ -1,0 +1,407 @@
+/* TapGo 廚房訂單列表樣式 */
+:root {
+    --primary-color: #059669;
+    --secondary-color: #f0fdf4;
+    --text-color: #1f2937;
+    --text-muted: #6b7280;
+    --border-color: #d1d5db;
+    --danger-color: #dc2626;
+    --warning-color: #d97706;
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.kitchen-app {
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: white;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.kitchen-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+}
+
+.kitchen-header .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.kitchen-header h1 {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.back-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.5rem;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.refresh-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.auto-refresh label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.auto-refresh input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.order-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Main Content */
+.kitchen-main {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-x: auto;
+}
+
+.loading {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+/* Table */
+.orders-table {
+    width: 100%;
+    min-width: 800px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 140px 120px 80px 1fr 80px 100px;
+    background: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.table-header > div {
+    padding: 1rem 0.75rem;
+    text-align: left;
+}
+
+.table-body {
+    display: contents;
+}
+
+.order-row {
+    display: grid;
+    grid-template-columns: 140px 120px 80px 1fr 80px 100px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+    align-items: center;
+    min-height: 60px;
+}
+
+.order-row:hover {
+    background-color: #f9fafb;
+}
+
+.order-row:last-child {
+    border-bottom: none;
+}
+
+.order-row > div {
+    padding: 1rem 0.75rem;
+    font-size: 1rem;
+    word-break: break-word;
+}
+
+.col-time {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+.col-customer {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.col-table {
+    font-weight: bold;
+    text-align: center;
+    background: #f3f4f6;
+    border-radius: 4px;
+    margin: 0.25rem 0;
+}
+
+.col-item {
+    font-weight: 600;
+}
+
+.col-qty {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    background: var(--warning-color);
+    color: white;
+    border-radius: 20px;
+    margin: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+}
+
+.col-price {
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: right;
+    font-size: 1.1rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem;
+    color: var(--text-muted);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 1.2rem;
+}
+
+/* Footer */
+.kitchen-footer {
+    background: var(--secondary-color);
+    padding: 1rem 2rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.last-update {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* 新訂單高亮 */
+.order-row.new-order {
+    background-color: #fef3cd;
+    animation: highlightNew 3s ease-out;
+}
+
+@keyframes highlightNew {
+    0% {
+        background-color: #fbbf24;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+/* 響應式設計 */
+@media (max-width: 1024px) {
+    .kitchen-header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .header-controls {
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .kitchen-main {
+        padding: 1rem;
+    }
+    
+    .orders-table {
+        min-width: 700px;
+    }
+    
+    .table-header {
+        grid-template-columns: 120px 100px 60px 1fr 60px 90px;
+        font-size: 1rem;
+    }
+    
+    .order-row {
+        grid-template-columns: 120px 100px 60px 1fr 60px 90px;
+    }
+    
+    .table-header > div,
+    .order-row > div {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .kitchen-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .header-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .stats {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .stat-item {
+        justify-content: space-between;
+    }
+    
+    .orders-table {
+        min-width: 600px;
+    }
+    
+    .table-header {
+        grid-template-columns: 100px 80px 50px 1fr 50px 80px;
+    }
+    
+    .order-row {
+        grid-template-columns: 100px 80px 50px 1fr 50px 80px;
+    }
+}
+
+/* 打印樣式 */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .kitchen-header,
+    .kitchen-footer {
+        background: white !important;
+        color: black !important;
+        box-shadow: none;
+    }
+    
+    .refresh-btn,
+    .auto-refresh {
+        display: none;
+    }
+    
+    .order-row {
+        break-inside: avoid;
+    }
+    
+    .col-qty {
+        background: #e5e7eb !important;
+        color: black !important;
+    }
+}

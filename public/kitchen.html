@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TapGo 廚房訂單</title>
+    <link rel="stylesheet" href="kitchen.css">
+</head>
+<body>
+    <div class="kitchen-app">
+        <header class="kitchen-header">
+            <div class="header-left">
+                <a href="index.html" class="back-link" title="回到點餐頁面">🏠</a>
+                <h1>🍳 廚房訂單列表</h1>
+            </div>
+            <div class="header-controls">
+                <button class="refresh-btn" id="refreshBtn">🔄 重新整理</button>
+                <div class="auto-refresh">
+                    <label>
+                        <input type="checkbox" id="autoRefresh" checked>
+                        <span>自動更新 (30秒)</span>
+                    </label>
+                </div>
+                <div class="order-count">
+                    共 <span id="orderCount">0</span> 筆訂單
+                </div>
+            </div>
+        </header>
+
+        <main class="kitchen-main">
+            <div class="loading" id="loading">載入中...</div>
+            <div class="orders-table" id="ordersTable">
+                <div class="table-header">
+                    <div class="col-time">時間</div>
+                    <div class="col-customer">客戶</div>
+                    <div class="col-table">桌號</div>
+                    <div class="col-item">菜品</div>
+                    <div class="col-qty">數量</div>
+                    <div class="col-price">金額</div>
+                </div>
+                <div class="table-body" id="tableBody">
+                    <!-- 訂單將由 JavaScript 動態生成 -->
+                </div>
+            </div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">📋</div>
+                <p>目前沒有訂單</p>
+            </div>
+        </main>
+
+        <footer class="kitchen-footer">
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">今日訂單：</span>
+                    <span class="stat-value" id="todayCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">總金額：</span>
+                    <span class="stat-value" id="totalAmount">$0</span>
+                </div>
+                <div class="last-update">
+                    最後更新：<span id="lastUpdate">-</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="kitchen.js"></script>
+</body>
+</html>

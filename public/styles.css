@@ -51,9 +51,31 @@ body {
     z-index: 100;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .logo {
     font-size: 1.25rem;
     font-weight: bold;
+}
+
+.kitchen-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.5rem;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.kitchen-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
 }
 
 .cart-btn {
