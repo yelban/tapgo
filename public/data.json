@@ -1,5 +1,5 @@
 {
-  "_version": "1.0.6",
+  "_version": "1.0.7",
   "_config": {
     "orderLimit": 400,
     "orderLimitMessage": "每人點餐金額上限 400元，不夠再加點"
