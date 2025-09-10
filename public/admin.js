@@ -437,16 +437,23 @@ class TapGoAdmin {
 
     async loadStatistics() {
         try {
-            // 這裡可以添加統計 API 調用
-            // 暫時顯示靜態統計資料
+            const response = await fetch('/api/admin/statistics');
+            const data = await response.json();
+            
+            if (data.success) {
+                this.renderStatistics(data.statistics);
+            } else {
+                throw new Error(data.error || '載入統計資料失敗');
+            }
+        } catch (error) {
+            console.error('載入統計資料失敗:', error);
+            // 顯示錯誤狀態或預設值
             this.renderStatistics({
                 totalOrders: 0,
                 totalRevenue: 0,
                 todayOrders: 0,
-                popularItem: '暫無資料'
+                popularItem: '載入失敗'
             });
-        } catch (error) {
-            console.error('載入統計資料失敗:', error);
         }
     }
 
