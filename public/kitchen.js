@@ -300,7 +300,7 @@ class KitchenDisplay {
         if (show) {
             this.refreshBtn.textContent = '載入中...';
         } else {
-            this.refreshBtn.textContent = '🔄 重新整理';
+            this.refreshBtn.textContent = '🔄';
         }
     }
 

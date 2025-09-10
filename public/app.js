@@ -5,11 +5,14 @@ class TapGoApp {
         this.cart = JSON.parse(localStorage.getItem('tapgo-cart') || '{}');
         this.currentItem = null;
         this.currentQuantity = 1;
+        this.ORDER_LIMIT = 600; // 預設金額上限，將從 data.json 載入
+        this.ORDER_LIMIT_MESSAGE = '每人點餐金額上限600元，不夠再加點'; // 預設訊息
         
         this.initializeElements();
         this.bindEvents();
         this.loadMenu();
         this.updateCartBadge();
+        this.loadSavedCustomerName();
     }
 
     initializeElements() {
@@ -55,7 +58,10 @@ class TapGoApp {
         // Cart modal events
         this.cartModalBackdrop.addEventListener('click', () => this.hideCartModal());
         this.cartModalClose.addEventListener('click', () => this.hideCartModal());
-        this.customerName.addEventListener('input', () => this.validateForm());
+        this.customerName.addEventListener('input', () => {
+            this.validateForm();
+            this.saveCustomerName();
+        });
         this.submitOrderBtn.addEventListener('click', () => this.submitOrder());
         
         // Keyboard events
@@ -69,10 +75,35 @@ class TapGoApp {
 
     async loadMenu() {
         try {
-            // 載入本地 menu data
+            // 載入本地 menu data - 使用版本號破壞快取
             const response = await fetch('/data.json');
-            this.menuData = await response.json();
+            const data = await response.json();
+            
+            // 提取版本號並重新載入（如果需要）
+            const version = data._version || '1.0.0';
+            
+            // 如果版本號與快取不同，使用版本號參數重新載入
+            const cachedVersion = localStorage.getItem('tapgo-menu-version');
+            if (cachedVersion !== version) {
+                const versionedResponse = await fetch(`/data.json?v=${version}`);
+                this.menuData = await versionedResponse.json();
+                localStorage.setItem('tapgo-menu-version', version);
+            } else {
+                this.menuData = data;
+            }
+            
+            // 讀取配置
+            if (this.menuData._config) {
+                this.ORDER_LIMIT = this.menuData._config.orderLimit || 600;
+                this.ORDER_LIMIT_MESSAGE = this.menuData._config.orderLimitMessage || '每人點餐金額上限600元，不夠再加點';
+            }
+            
+            // 移除私有欄位以避免渲染
+            delete this.menuData._version;
+            delete this.menuData._config;
+            
             this.renderMenu();
+            this.updateOrderLimitMessage();
         } catch (error) {
             console.error('載入菜單失敗:', error);
             this.showError('載入菜單失敗，請重新整理頁面');
@@ -100,9 +131,13 @@ class TapGoApp {
                 const itemId = `${categoryName}-${item.名稱}`;
                 categoryHTML += `
                     <div class="item-card" data-item-id="${itemId}" data-category="${categoryName}">
-                        <div class="item-name">${item.名稱}</div>
-                        <div class="item-price">$${item.價格}</div>
-                        ${item.備註 ? `<div class="item-note">${item.備註}</div>` : ''}
+                        <div class="item-content">
+                            <div class="item-main">
+                                <span class="item-name">${item.名稱}</span>
+                                <span class="item-price">$${item.價格}</span>
+                            </div>
+                            ${item.備註 ? `<div class="item-note">${item.備註}</div>` : ''}
+                        </div>
                     </div>
                 `;
             });
@@ -196,6 +231,8 @@ class TapGoApp {
 
     showCartModal() {
         this.renderCartItems();
+        this.validateForm(); // 確保按鈕狀態正確
+        this.updateOrderLimitMessage(); // 更新限制訊息
         this.cartModal.classList.add('show');
         document.body.style.overflow = 'hidden';
     }
@@ -244,6 +281,17 @@ class TapGoApp {
         
         this.cartItems.innerHTML = cartHTML;
         this.totalAmount.textContent = `$${total}`;
+        
+        // 檢查是否超過上限並更新樣式
+        const isOverLimit = total > this.ORDER_LIMIT;
+        if (isOverLimit) {
+            this.totalAmount.classList.add('over-limit');
+        } else {
+            this.totalAmount.classList.remove('over-limit');
+        }
+        
+        // 重新驗證表單
+        this.validateForm();
         
         // 綁定購物車控制事件
         this.cartItems.querySelectorAll('.cart-decrease').forEach(btn => {
@@ -308,7 +356,26 @@ class TapGoApp {
 
     validateForm() {
         const name = this.customerName.value.trim();
-        this.submitOrderBtn.disabled = !name;
+        const total = this.getCartTotal();
+        const isOverLimit = total > this.ORDER_LIMIT;
+        
+        // 按鈕停用條件：沒有姓名 或 超過金額上限
+        this.submitOrderBtn.disabled = !name || isOverLimit;
+        
+        // 更新按鈕文字和樣式
+        if (isOverLimit) {
+            this.submitOrderBtn.textContent = `超過上限 $${this.ORDER_LIMIT}`;
+            this.submitOrderBtn.classList.add('over-limit');
+        } else {
+            this.submitOrderBtn.textContent = '送出訂單';
+            this.submitOrderBtn.classList.remove('over-limit');
+        }
+    }
+
+    getCartTotal() {
+        return Object.values(this.cart).reduce((total, item) => {
+            return total + (item.price * item.quantity);
+        }, 0);
     }
 
     async submitOrder() {
@@ -321,6 +388,12 @@ class TapGoApp {
         const cartItems = Object.values(this.cart);
         if (cartItems.length === 0) {
             this.showError('購物車是空的');
+            return;
+        }
+        
+        const total = this.getCartTotal();
+        if (total > this.ORDER_LIMIT) {
+            this.showError(`訂單金額不能超過 $${this.ORDER_LIMIT}`);
             return;
         }
         
@@ -346,7 +419,7 @@ class TapGoApp {
                 this.clearCart();
                 this.hideCartModal();
                 this.showSuccess('訂單送出成功！');
-                this.customerName.value = '';
+                // 保持姓名不清空，只清空桌號
                 this.tableNumber.value = '';
             } else {
                 throw new Error('送出訂單失敗');
@@ -370,12 +443,36 @@ class TapGoApp {
         localStorage.setItem('tapgo-cart', JSON.stringify(this.cart));
     }
 
+    saveCustomerName() {
+        const name = this.customerName.value.trim();
+        if (name) {
+            localStorage.setItem('tapgo-customer-name', name);
+        } else {
+            localStorage.removeItem('tapgo-customer-name');
+        }
+    }
+
+    loadSavedCustomerName() {
+        const savedName = localStorage.getItem('tapgo-customer-name');
+        if (savedName) {
+            this.customerName.value = savedName;
+            this.validateForm();
+        }
+    }
+
     showSuccess(message) {
         this.showToast(message, 'success');
     }
 
     showError(message) {
         this.showToast(message, 'error');
+    }
+
+    updateOrderLimitMessage() {
+        const limitNotice = document.querySelector('.amount-limit-notice');
+        if (limitNotice) {
+            limitNotice.textContent = this.ORDER_LIMIT_MESSAGE;
+        }
     }
 
     showToast(message, type = 'info') {
