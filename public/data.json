@@ -1,8 +1,8 @@
 {
-  "_version": "1.0.5",
+  "_version": "1.0.6",
   "_config": {
-    "orderLimit": 700,
-    "orderLimitMessage": "每人點餐金額上限 700元，不夠再加點"
+    "orderLimit": 400,
+    "orderLimitMessage": "每人點餐金額上限 400元，不夠再加點"
   },
   "丼飯": {
     "分類說明": "丼飯均附稻禾味噌湯",
